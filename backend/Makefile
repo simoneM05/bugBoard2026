@@ -42,5 +42,8 @@ remove: ## Remove the volumes
 	docker volume rm -f ${APP_NAME}
 
 #-- Database
-db: ## Start the local database MySQL
-	docker-compose up -d mysql
+mongo: ## Start solo MongoDB
+	docker-compose up -d mongo
+
+mongo-stop: ## Stop MongoDB
+	docker-compose stop mongo

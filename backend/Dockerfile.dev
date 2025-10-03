@@ -10,6 +10,9 @@ WORKDIR /app
 # Install Node Package
 RUN npm install --legacy-peer-deps
 
+# Genera Prisma Client
+RUN npx prisma generate
+
 # Set Env
 ENV NODE_ENV development
 
