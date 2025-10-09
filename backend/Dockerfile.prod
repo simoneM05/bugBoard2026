@@ -1,22 +1,54 @@
-# NodeJS Version 16
-FROM node:16.18-buster-slim
+# Multi-stage build: Dependencies
+FROM node:20-slim AS deps
 
-# Copy Dir
-COPY . ./app
+# Installa OpenSSL per Prisma
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
-# Work to Dir
 WORKDIR /app
 
-# Install Node Package
-RUN npm install --legacy-peer-deps
+# Copia solo package files per cache layer optimization
+COPY package.json package-lock.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# Multi-stage build: Builder
+FROM node:20-slim AS builder
+
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+COPY --from=deps /app/node_modules ./node_modules
 
 # Genera Prisma Client
 RUN npx prisma generate
 
-# Set Env
-ENV NODE_ENV development
+# Build dell'applicazione
+RUN npm run build
+
+# Multi-stage build: Production
+FROM node:20-slim AS production
+
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+
+# Crea user non-root per sicurezza
+RUN groupadd -r nodejs && useradd -r -g nodejs nodejs
+
+WORKDIR /app
+
+# Copia solo i file necessari
+COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/package.json ./
+
+USER nodejs
+
+ENV NODE_ENV=production
 
 EXPOSE 3000
 
-# Cmd script
-CMD ["npm", "run", "dev"]
+# Usa node direttamente invece di npm per gestire correttamente i segnali
+CMD ["node", "dist/server.js"]

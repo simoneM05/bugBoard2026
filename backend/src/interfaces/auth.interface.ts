@@ -1,15 +1,14 @@
 import { Request } from 'express';
-import { User } from '@interfaces/users.interface';
-
-export interface DataStoredInToken {
-  id: number;
-}
+import { UserWithoutIssues } from './users.interface';
 
 export interface TokenData {
   token: string;
   expiresIn: number;
 }
+export interface DataStoredInToken {
+  id: string; // MongoDB usa string (_id)
+}
 
 export interface RequestWithUser extends Request {
-  user: User;
+  user: UserWithoutIssues;
 }

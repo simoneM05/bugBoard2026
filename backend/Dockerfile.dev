@@ -1,22 +1,20 @@
-# NodeJS Version 16
-FROM node:16.18-buster-slim
+FROM node:18-slim
 
-# Copy Dir
-COPY . ./app
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
-# Work to Dir
 WORKDIR /app
 
-# Install Node Package
-RUN npm install --legacy-peer-deps
+COPY package*.json ./
+COPY prisma ./prisma/
 
-# Genera Prisma Client
+RUN npm ci && npm cache clean --force
 RUN npx prisma generate
 
-# Set Env
-ENV NODE_ENV development
+COPY . .
+
+ENV NODE_ENV=development
 
 EXPOSE 3000
 
-# Cmd script
+# Aspetta che MongoDB sia pronto prima di avviare
 CMD ["npm", "run", "dev"]

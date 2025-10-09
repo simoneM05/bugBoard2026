@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   server:
     container_name: server
@@ -7,23 +9,48 @@ services:
     ports:
       - '3000:3000'
     environment:
-      DATABASE_URL: mysql://root:password@localhost:3306/dev
-      MONGO_URL: mongodb://mongo:27017/devdb
+      NODE_ENV: development
+      DATABASE_URL: mongodb://root:prisma@mongo:27017/devdb?authSource=admin&replicaSet=rs0
     volumes:
       - ./:/app
       - /app/node_modules
-    restart: 'unless-stopped'
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
     networks:
       - backend
 
   mongo:
-    image: mongo:latest
+    image: mongo:7.0
     container_name: mongo
-    restart: 'unless-stopped'
+    restart: unless-stopped
+    command: ['--replSet', 'rs0', '--bind_ip_all']
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: prisma
     ports:
       - '27017:27017'
     volumes:
       - mongo-data:/data/db
+      - mongo-config:/data/configdb
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    healthcheck:
+      test: |
+        mongosh --quiet --eval "
+        try {
+          rs.status();
+        } catch(err) {
+          rs.initiate({
+            _id: 'rs0',
+            members: [{ _id: 0, host: 'host.docker.internal:27017' }]
+          });
+        }"
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 10s
     networks:
       - backend
 
@@ -32,7 +59,7 @@ networks:
     driver: bridge
 
 volumes:
-  data:
-    driver: local
   mongo-data:
+    driver: local
+  mongo-config:
     driver: local

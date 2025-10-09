@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mongodb"
-  url      = env("MONGO_URL")
+   provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -15,6 +15,7 @@ model User {
     email    String  @unique
     password String
     role     Role    @default(user)
+    refreshToken String?  // Nullable per logout
     authoredIssues Issue[] @relation("AuthorIssues")
     assignedIssues Issue[] @relation("AssignedIssues")
     comments CommentIssue[]
@@ -30,17 +31,16 @@ model Issue {
     type        TypeIssue @default(bug)
     status      Status   @default(ToDo)
     createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
     authorId    String   @db.ObjectId
     author      User     @relation("AuthorIssues", fields: [authorId], references: [id])
     assigneeId  String?   @db.ObjectId
-    Assignee    User?     @relation("AssignedIssues", fields: [assigneeId], references: [id])
+    assignee    User?     @relation("AssignedIssues", fields: [assigneeId], references: [id])
     comments    CommentIssue[]
 }
 
 model CommentIssue {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  comment     String
+  content     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   authorId    String   @db.ObjectId
@@ -68,4 +68,5 @@ enum Status {
 enum Role {
   admin
   user
+  stakeholder
 }
