@@ -15,6 +15,7 @@ export class UserRoute implements Routes {
   }
 
   private initializeRoutes() {
+    this.router.get(`${this.path}/me`, AuthMiddleware, this.user.getMe);
     this.router.get(`${this.path}`, AuthMiddleware, this.user.getUsers);
     this.router.get(`${this.path}/:id(\\d+)`, AuthMiddleware, this.user.getUserById);
     this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateUserSchema), this.user.createUser);

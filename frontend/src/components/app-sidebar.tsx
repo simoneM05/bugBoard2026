@@ -1,6 +1,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
@@ -11,46 +12,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import {
-  ArrowRightToLine,
-  Edit2,
-  EllipsisVertical,
-  Plus,
-  Trash2,
-} from "lucide-react";
+import { ArrowRightToLine, EllipsisVertical, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
+import ProfileDropDown from "./profile-dropdown";
 
-// Definisci i dati della sidebar
 const sidebarItems = [
   {
     id: "all-issue",
     label: "All Issue",
-    path: "/",
+    path: "/AllIssue",
     hasDropdown: false,
   },
   {
-    id: "faq",
-    label: "Faq",
-    path: "/faq",
-    hasDropdown: true,
-  },
-  {
-    id: "docs",
-    label: "Docs",
-    path: "/docs",
-    hasDropdown: true,
-  },
-  {
-    id: "feature",
-    label: "Feature",
-    path: "/feature",
-    hasDropdown: true,
-  },
-  {
-    id: "bug",
-    label: "Bug",
-    path: "/bug",
+    id: "dashboard",
+    label: "Dashboard",
+    path: "/dashboard",
     hasDropdown: true,
   },
 ];
@@ -58,7 +35,6 @@ const sidebarItems = [
 export function AppSidebar() {
   const handleAdd = (itemLabel: string) => {
     console.log(`Add clicked for ${itemLabel}`);
-    // Implementa la logica di add qui
   };
 
   return (
@@ -92,20 +68,6 @@ export function AppSidebar() {
                     <Plus size={12} />
                     <span className="ml-2 text-xs">Add</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="items-center"
-                    onClick={() => handleAdd(item.label)}
-                  >
-                    <Trash2 size={12} />
-                    <span className="ml-2 text-xs">Delete</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="items-center"
-                    onClick={() => handleAdd(item.label)}
-                  >
-                    <Edit2 size={12} />
-                    <span className="ml-2 text-xs">Edit</span>
-                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
@@ -121,6 +83,10 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
+
+      <SidebarFooter className="flex items-center">
+        <ProfileDropDown />
+      </SidebarFooter>
     </Sidebar>
   );
 }

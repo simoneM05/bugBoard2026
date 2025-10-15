@@ -21,6 +21,15 @@ export class UserController {
     }
   };
 
+  public getMe = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const reqWithUser = req as Request & { user: User };
+      const findOneUserData: User = await this.user.findUserById(reqWithUser.user.id);
+      res.status(200).json({ data: findOneUserData, message: 'findOne' });
+    } catch (error) {
+      next(error);
+    }
+  };
   public getUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const reqWithUser = req as Request & { user: User };

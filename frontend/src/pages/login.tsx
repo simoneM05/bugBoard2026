@@ -62,9 +62,6 @@ export function Login() {
         // Salva access token
         localStorage.setItem("accessToken", result.data.accessToken);
 
-        // Opzionale: salva anche i dati utente
-        localStorage.setItem("user", JSON.stringify(result.data.user));
-
         toast.success(result.message || "Login successful!");
         navigate("/");
       } else {
