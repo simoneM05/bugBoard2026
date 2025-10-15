@@ -20,6 +20,13 @@ const labelVariants = cva(
   },
 );
 
+/**
+ * Renders a styled Radix UI Label.Root with configurable visual variants.
+ *
+ * @param className - Additional CSS classes to merge with the computed variant classes
+ * @param variant - Visual variant to apply; `"primary"` applies `font-medium`, `"secondary"` applies `font-normal`. Defaults to `"primary"`.
+ * @returns A Radix `Label.Root` element with merged classes and `data-slot="label"`.
+ */
 function Label({
   className,
   variant,

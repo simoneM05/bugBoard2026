@@ -41,6 +41,13 @@ interface AutoCompleteProps {
   onChange?: (value: string) => void;
 }
 
+/**
+ * A self-contained autocomplete input that shows debounced suggestions, supports keyboard navigation, and notifies parent on selection.
+ *
+ * @param value - Initial input value.
+ * @param onChange - Optional callback invoked with the updated input value when the user types or selects a suggestion.
+ * @returns The Autocomplete React element rendering an input with a suggestions list, loading state, and keyboard/click selection behavior.
+ */
 export default function Autocomplete({
   value = "",
   onChange,

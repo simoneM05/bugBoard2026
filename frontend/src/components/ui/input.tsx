@@ -127,6 +127,12 @@ const inputWrapperVariants = cva(
   }
 );
 
+/**
+ * Renders a size-variant styled input element with slot metadata.
+ *
+ * @param variant - Visual size variant for the input; one of `"sm"`, `"md"`, or `"lg"`. Defaults to `"md"`.
+ * @returns A JSX `input` element with CVA-generated classes applied and `data-slot="input"`.
+ */
 function Input({
   className,
   type,
@@ -143,6 +149,13 @@ function Input({
   );
 }
 
+/**
+ * Renders a styled input addon container that applies CVA-based classes.
+ *
+ * @param variant - Size variant for the addon; affects height, padding, and SVG sizing (`sm` | `md` | `lg`).
+ * @param mode - Layout mode for the addon; `default` applies standard padding, `icon` centers content and removes horizontal padding.
+ * @returns A `div` element configured as an input addon with the appropriate classes and attributes.
+ */
 function InputAddon({
   className,
   variant,
@@ -158,6 +171,12 @@ function InputAddon({
   );
 }
 
+/**
+ * Group wrapper for inputs and addons that renders a visually connected input group.
+ *
+ * @param props - Standard `div` props plus variant props defined by `inputGroupVariants`.
+ * @returns The rendered input group container element.
+ */
 function InputGroup({
   className,
   ...props
@@ -171,6 +190,13 @@ function InputGroup({
   );
 }
 
+/**
+ * Wraps input-related elements to provide shared layout, focus behavior, and size-based styling.
+ *
+ * @param variant - Size variant to apply to the wrapper and its contained input (e.g., `sm`, `md`, `lg`)
+ * @param className - Additional CSS classes to merge with the component's computed classes
+ * @returns A `div` element configured as an input wrapper with composed CVA-based classes and a `data-slot="input-wrapper"` attribute
+ */
 function InputWrapper({
   className,
   variant,

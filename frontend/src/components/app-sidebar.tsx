@@ -32,6 +32,13 @@ const sidebarItems = [
   },
 ];
 
+/**
+ * Renders the application's sidebar containing navigation items and a profile dropdown.
+ *
+ * Renders a vertical list of sidebar items from `sidebarItems`; items with a dropdown expose an inline menu with an "Add" action that invokes the local `handleAdd` handler for that item. The footer displays the profile dropdown.
+ *
+ * @returns The sidebar JSX element containing the navigation groups and footer profile dropdown.
+ */
 export function AppSidebar() {
   const handleAdd = (itemLabel: string) => {
     console.log(`Add clicked for ${itemLabel}`);

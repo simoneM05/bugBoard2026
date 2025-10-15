@@ -6,28 +6,57 @@ import { XIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Provides the root container for a slide-out sheet and forwards all props to the sheet root.
+ *
+ * @returns The sheet root React element with `data-slot="sheet"`.
+ */
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
 }
 
+/**
+ * Renders a Trigger element for the Sheet and forwards all received props to the underlying Radix Trigger.
+ *
+ * @param props - Props forwarded to the underlying Sheet Trigger component
+ * @returns The Trigger element with `data-slot="sheet-trigger"`
+ */
 function SheetTrigger({
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
   return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />
 }
 
+/**
+ * Renders a close trigger element for the sheet dialog.
+ *
+ * @returns A SheetPrimitive.Close element with `data-slot="sheet-close"` and all forwarded props.
+ */
 function SheetClose({
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Close>) {
   return <SheetPrimitive.Close data-slot="sheet-close" {...props} />
 }
 
+/**
+ * Wraps Radix Dialog's Portal to render a sheet-specific portal element.
+ *
+ * @returns A Portal element with `data-slot="sheet-portal"` and all forwarded props
+ */
 function SheetPortal({
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Portal>) {
   return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />
 }
 
+/**
+ * Animated translucent backdrop overlay used by Sheet components.
+ *
+ * Attaches the `data-slot="sheet-overlay"` attribute, merges any `className` provided,
+ * and forwards remaining props to Radix's Overlay primitive.
+ *
+ * @returns A sheet overlay element with state-based open/close animations and a semi-transparent black backdrop.
+ */
 function SheetOverlay({
   className,
   ...props
@@ -44,6 +73,16 @@ function SheetOverlay({
   )
 }
 
+/**
+ * Renders the slide-out sheet panel and its close control, positioned on the specified side.
+ *
+ * Renders a Radix `<SheetPrimitive.Content>` inside a portal with an overlay, applies side-specific
+ * positioning and entrance/exit animations, and includes a built-in close button.
+ *
+ * @param className - Additional CSS classes applied to the content container
+ * @param side - Position of the sheet panel; one of `"top"`, `"right"`, `"bottom"`, or `"left"` (default: `"right"`)
+ * @returns The sheet content element with overlay and close control
+ */
 function SheetContent({
   className,
   children,
@@ -81,6 +120,11 @@ function SheetContent({
   )
 }
 
+/**
+ * Renders the Sheet header container with base vertical layout, gap, and padding.
+ *
+ * @returns The header element for a Sheet, rendered as a `div` with `data-slot="sheet-header"`.
+ */
 function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -91,6 +135,13 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Renders the sheet footer container with preset layout and spacing classes.
+ *
+ * @param className - Additional CSS classes to merge with the footer's default classes
+ * @param props - Additional props forwarded to the underlying `div`
+ * @returns A `div` element rendered as the sheet footer (data-slot="sheet-footer")
+ */
 function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -101,6 +152,12 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Renders a sheet title element with base typography and foreground styling.
+ *
+ * @param className - Additional CSS classes to apply to the title element
+ * @returns The sheet title element
+ */
 function SheetTitle({
   className,
   ...props
@@ -114,6 +171,11 @@ function SheetTitle({
   )
 }
 
+/**
+ * Renders the sheet's description slot with muted, small text styling.
+ *
+ * @returns The Sheet Description element with applied styling and forwarded props.
+ */
 function SheetDescription({
   className,
   ...props

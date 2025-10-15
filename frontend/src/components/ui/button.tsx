@@ -36,6 +36,14 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * Renders a themed UI button or a provided child element with variant and size styling.
+ *
+ * @param variant - Visual style variant for the button (e.g., "default", "destructive", "outline", "secondary", "ghost", "link")
+ * @param size - Size variant for the button (e.g., "default", "sm", "lg", "icon", "icon-sm", "icon-lg")
+ * @param asChild - When true, renders the provided child element instead of a native `button` while preserving button styling and props
+ * @returns The rendered button element or the provided child element with computed styling and forwarded props
+ */
 function Button({
   className,
   variant,
