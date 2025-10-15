@@ -1,54 +1,19 @@
-import { IsEmail, IsString, IsNotEmpty, IsEnum, IsOptional, MinLength, MaxLength } from 'class-validator';
+import { z } from 'zod';
 
-// ENUMS corrispondenti
-export enum Priority {
-  low = 'low',
-  medium = 'medium',
-  high = 'high',
-}
+// Enum Role come array stringhe case sensitive
+const RoleEnum = z.enum(['admin', 'user', 'stakeholder']);
 
-export enum TypeIssue {
-  question = 'question',
-  bug = 'bug',
-  feature = 'feature',
-  documentation = 'documentation',
-}
+export const CreateUserSchema = z.object({
+  email: z.string().email('Invalid email'),
+  password: z.string().min(9, 'Password must be at least 9 characters').max(32, 'Password must be at most 32 characters'),
+  role: RoleEnum.optional(),
+});
 
-export enum Status {
-  ToDo = 'ToDo',
-  InProgress = 'InProgress',
-  Done = 'Done',
-}
+export const UpdateUserSchema = z.object({
+  password: z.string().min(9, 'Password must be at least 9 characters').max(32, 'Password must be at most 32 characters'),
+  role: RoleEnum.optional(),
+});
 
-export enum Role {
-  admin = 'admin',
-  user = 'user',
-}
-
-// DTO per User (creazione e update)
-export class CreateUserDto {
-  @IsEmail()
-  public email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(9)
-  @MaxLength(32)
-  public password: string;
-
-  @IsEnum(Role)
-  @IsOptional()
-  public role?: Role;
-}
-
-export class UpdateUserDto {
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(9)
-  @MaxLength(32)
-  public password: string;
-
-  @IsEnum(Role)
-  @IsOptional()
-  public role?: Role;
-}
+// Tipi TypeScript inferiti
+export type CreateUserDto = z.infer<typeof CreateUserSchema>;
+export type UpdateUserDto = z.infer<typeof UpdateUserSchema>;

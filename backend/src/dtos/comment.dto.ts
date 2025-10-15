@@ -1,28 +1,10 @@
-import { IsString, IsNotEmpty, IsMongoId, IsOptional } from 'class-validator';
+import { z } from 'zod';
 
-// DTO per CommentIssue
-export class CreateCommentIssueDto {
-  @IsString()
-  @IsNotEmpty()
-  public comment: string;
+export const CreateCommentSchema = z.object({
+  content: z.string().nonempty('Content is required'),
+  authorId: z.string().nonempty('AuthorId is required'),
+  issueId: z.string().nonempty('IssueId is required'),
+});
 
-  @IsMongoId()
-  public authorId: string;
-
-  @IsMongoId()
-  public issueId: string;
-}
-
-export class UpdateCommentIssueDto {
-  @IsString()
-  @IsOptional()
-  public comment?: string;
-
-  @IsMongoId()
-  @IsOptional()
-  public authorId?: string;
-
-  @IsMongoId()
-  @IsOptional()
-  public issueId?: string;
-}
+// Tipo TypeScript generato automaticamente da Zod
+export type CreateCommentDto = z.infer<typeof CreateCommentSchema>;

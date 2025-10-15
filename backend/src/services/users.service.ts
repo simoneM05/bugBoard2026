@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { Service } from 'typedi';
 import { CreateUserDto } from '@dtos/users.dto';
@@ -7,13 +6,14 @@ import { UserWithIssues } from '@/interfaces';
 
 @Service()
 export class UserService {
-  public user = new PrismaClient().user;
+  public user = prisma.user;
 
   public async findAllUser(): Promise<UserWithIssues[]> {
     return await this.user.findMany({
       include: {
         authoredIssues: true,
         assignedIssues: true,
+        comments: true,
       },
     });
   }
@@ -21,7 +21,7 @@ export class UserService {
   public async findUserById(userId: string): Promise<UserWithIssues> {
     const findUser = await this.user.findUnique({
       where: { id: userId },
-      include: { authoredIssues: true, assignedIssues: true },
+      include: { authoredIssues: true, assignedIssues: true, comments: true },
     });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
     return findUser;
