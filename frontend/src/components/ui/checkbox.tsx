@@ -29,6 +29,14 @@ const checkboxVariants = cva(
   },
 );
 
+/**
+ * Stylized checkbox component that renders a Radix UI checkbox with size variants and visual indicators for checked and indeterminate states.
+ *
+ * @param className - Optional additional class names applied to the root element
+ * @param size - Visual size variant; one of `"sm"`, `"md"`, or `"lg"`. Defaults to `"md"`.
+ * @param props - All other props are forwarded to the underlying CheckboxPrimitive.Root element
+ * @returns A JSX element representing the styled checkbox with check and indeterminate indicators
+ */
 function Checkbox({
   className,
   size,

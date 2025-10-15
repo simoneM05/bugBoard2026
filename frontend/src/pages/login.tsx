@@ -23,6 +23,13 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+/**
+ * Render a login form that validates credentials, performs authentication, and redirects on success.
+ *
+ * Renders a styled email/password form with client-side validation. Submitting the form sends credentials to the authentication endpoint, stores the returned access token in localStorage when present, displays success or error toasts, and navigates to the root path on successful login.
+ *
+ * @returns A React element containing the login UI and its associated behavior (validation, network request, token storage, toasts, and navigation).
+ */
 export function Login() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);

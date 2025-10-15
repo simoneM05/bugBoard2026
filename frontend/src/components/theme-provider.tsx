@@ -20,6 +20,14 @@ const initialState: ThemeProviderState = {
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
+/**
+ * Provides theme state to descendants, persists changes to localStorage, and applies the active theme class to the document root.
+ *
+ * @param children - React children rendered inside the provider
+ * @param defaultTheme - Theme to use when no value is stored in localStorage (defaults to `"system"`)
+ * @param storageKey - Key used to read/write the theme in localStorage (defaults to `"vite-ui-theme"`)
+ * @returns The provider element that supplies `{ theme, setTheme }` to descendant components via context
+ */
 export function ThemeProvider({
   children,
   defaultTheme = "system",

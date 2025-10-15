@@ -3,6 +3,13 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Provides tooltip context to descendants and applies provider-level configuration.
+ *
+ * @param delayDuration - Time in milliseconds to wait before showing the tooltip; defaults to 0.
+ * @param props - Remaining props forwarded to the underlying Tooltip Provider.
+ * @returns The configured TooltipPrimitive.Provider element
+ */
 function TooltipProvider({
   delayDuration = 0,
   ...props
@@ -16,6 +23,11 @@ function TooltipProvider({
   )
 }
 
+/**
+ * Renders a tooltip root element while ensuring it is wrapped in the tooltip provider context and forwards all received props.
+ *
+ * @returns The rendered tooltip root element with provider context applied
+ */
 function Tooltip({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
@@ -26,12 +38,29 @@ function Tooltip({
   )
 }
 
+/**
+ * Render a tooltip trigger element used to toggle tooltip visibility.
+ *
+ * @param props - Props to apply to the underlying Radix Tooltip Trigger component.
+ * @returns A TooltipPrimitive.Trigger element with `data-slot="tooltip-trigger"` and the provided props applied.
+ */
 function TooltipTrigger({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
 }
 
+/**
+ * Renders tooltip content inside a Portal with default styling and an integrated arrow.
+ *
+ * Additional `className` values are merged with the component's default styles; all other props are forwarded to the underlying Tooltip content primitive.
+ *
+ * @param className - Optional additional class names to apply to the content element
+ * @param sideOffset - Distance in pixels to offset the content from the trigger (default: 0)
+ * @param children - Content to display inside the tooltip
+ * @param props - Additional props forwarded to the underlying TooltipPrimitive.Content
+ * @returns A `JSX.Element` containing the positioned, styled tooltip content and arrow
+ */
 function TooltipContent({
   className,
   sideOffset = 0,

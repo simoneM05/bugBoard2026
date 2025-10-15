@@ -31,7 +31,17 @@ interface CheckContext {
 }
 
 /**
- * Controlla in modo centralizzato se un ruolo ha permesso di eseguire un'azione su una risorsa dato il contesto
+ * Determine whether a role is allowed to perform an action on a resource given contextual ownership and assignment.
+ *
+ * @param role - The role name to evaluate (e.g., "admin", "user", "stakeholder")
+ * @param resource - The resource identifier (e.g., "issues", "users", "comments")
+ * @param action - The action to perform (e.g., "read", "write", "delete")
+ * @param context - Contextual information used to evaluate scoped permissions. May include:
+ *   - `userId`: ID of the requesting user (required)
+ *   - `resourceOwnerId`: ID of the resource owner
+ *   - `assigneeId`: ID of the resource assignee
+ *   - `isCreation`: when `true`, a write action may be allowed under `own` scope even though the resource has no owner yet
+ * @returns `true` if the role is permitted to perform the specified action on the resource in the provided context, `false` otherwise.
  */
 export function canPerformAction(
   role: string,
